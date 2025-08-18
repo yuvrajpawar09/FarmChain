@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmChain - Blockchain Agricultural Supply Chain</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>FarmChain - Blockchain Agricultural Supply Chain</h1>
+        
+        <div class="role-selector">
+            <label for="userRole">Select your role:</label>
+            <select id="userRole" onchange="showRole()">
+                <option value="">-- Choose --</option>
+                <option value="farmer">Farmer</option>
+                <option value="distributor">Distributor</option>
+                <option value="retailer">Retailer</option>
+                <option value="consumer">Consumer</option>
+            </select>
+        </div>
+
+        <!-- Farmer Interface -->
+        <div id="farmer" class="role-content" style="display: none;">
+            <h2>Farmer Dashboard</h2>
+            <form id="farmerForm">
+                <input type="text" id="cropType" placeholder="Crop Type (e.g., Wheat, Rice)" required>
+                <input type="number" id="quantity" placeholder="Quantity (kg)" required>
+                <input type="date" id="harvestDate" required>
+                <input type="text" id="farmLocation" placeholder="Farm Location" required>
+                <button type="submit">Register Product</button>
+            </form>
+            <div id="farmerResult"></div>
+        </div>
+
+        <!-- Distributor Interface -->
+        <div id="distributor" class="role-content" style="display: none;">
+            <h2>Distributor Dashboard</h2>
+            <p>Verify products, manage logistics, and track inventory.</p>
+            <input type="text" id="productId" placeholder="Enter Product ID">
+            <button onclick="verifyProduct()">Verify Product</button>
+            <button onclick="updateLogistics()">Update Logistics</button>
+            <div id="distributorResult"></div>
+        </div>
+
+        <!-- Retailer Interface -->
+        <div id="retailer" class="role-content" style="display: none;">
+            <h2>Retailer Dashboard</h2>
+            <p>Check product authenticity and manage inventory.</p>
+            <input type="text" id="retailerProductId" placeholder="Enter Product ID">
+            <button onclick="checkAuthenticity()">Check Authenticity</button>
+            <button onclick="updateInventory()">Update Inventory</button>
+            <div id="retailerResult"></div>
+        </div>
+
+        <!-- Consumer Interface -->
+        <div id="consumer" class="role-content" style="display: none;">
+            <h2>Consumer Portal</h2>
+            <p>Scan QR code or enter product ID to view product information.</p>
+            <input type="text" id="qrCode" placeholder="Enter QR Code or Product ID">
+            <button onclick="scanProduct()">Scan Product</button>
+            <div id="consumerResult"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
