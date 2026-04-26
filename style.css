@@ -1,119 +1,158 @@
-/* Basic CSS for FarmChain Frontend */
+/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* BODY */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
     color: #333;
 }
 
+/* MAIN CONTAINER */
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 650px;
+    margin: 60px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
 }
 
+.container:hover {
+    transform: translateY(-3px);
+}
+
+/* HEADINGS */
 h1 {
     text-align: center;
-    color: #2e7d32;
-    margin-bottom: 30px;
-    font-size: 1.8em;
+    color: #1b5e20;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    letter-spacing: 1px;
 }
 
 h2 {
-    color: #388e3c;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #4caf50;
-    padding-bottom: 10px;
+    color: #2e7d32;
+    margin-bottom: 15px;
+    border-left: 5px solid #66bb6a;
+    padding-left: 10px;
 }
 
+/* ROLE SELECTOR */
 .role-selector {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
 .role-selector label {
-    font-weight: bold;
+    font-weight: 600;
     margin-right: 10px;
 }
 
+/* DROPDOWN */
 select {
     padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    min-width: 150px;
+    border: 2px solid #c8e6c9;
+    border-radius: 6px;
+    font-size: 15px;
+    min-width: 160px;
+    transition: 0.3s;
 }
 
-.role-content {
-    margin-top: 20px;
+select:focus {
+    border-color: #4caf50;
+    outline: none;
 }
 
+/* INPUT FIELDS */
 input[type="text"], 
 input[type="number"], 
 input[type="date"] {
     width: 100%;
     padding: 12px;
-    margin: 8px 0;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    margin: 10px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: 0.3s;
 }
 
 input:focus {
-    border-color: #4caf50;
+    border-color: #66bb6a;
+    box-shadow: 0 0 5px rgba(102, 187, 106, 0.4);
     outline: none;
 }
 
+/* BUTTONS */
 button {
-    background-color: #4caf50;
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
     color: white;
-    padding: 12px 20px;
+    padding: 12px 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
-    margin: 5px;
+    font-size: 15px;
+    margin: 8px 5px;
     min-width: 120px;
+    transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #388e3c;
+    background: linear-gradient(135deg, #388e3c, #43a047);
+    transform: scale(1.05);
 }
 
+button:active {
+    transform: scale(0.97);
+}
+
+/* RESULT BOX */
 .result-box {
     margin-top: 20px;
     padding: 15px;
-    background-color: #e8f5e8;
-    border: 1px solid #4caf50;
-    border-radius: 5px;
+    background-color: #e8f5e9;
+    border-left: 5px solid #4caf50;
+    border-radius: 6px;
+    animation: fadeIn 0.5s ease;
 }
 
+/* PRODUCT INFO */
 .product-info {
-    background-color: #f0f8ff;
-    border: 1px solid #2196f3;
+    background-color: #e3f2fd;
+    border-left: 5px solid #2196f3;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 6px;
     margin-top: 15px;
 }
 
+/* TEXT STYLES */
 .success {
     color: #2e7d32;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .info {
-    color: #1976d2;
+    color: #1565c0;
 }
 
 p {
-    margin-bottom: 15px;
-    line-height: 1.5;
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
