@@ -1,84 +1,94 @@
-// ===================== DATA =====================
-const sampleProducts = {
-    FC001: {
-        id: "FC001",
-        crop: "Wheat",
-        quantity: 500,
-        farmer: "Rajesh Kumar",
-        farmLocation: "Pune, Maharashtra",
-        harvestDate: "2025-07-15",
-        quality: "Organic Certified",
-        currentLocation: "Distributor Warehouse",
-        price: "₹25/kg"
+// ===================== DATA (SIMULATED DB) =====================
+const ProductDB = (() => {
+    const products = {
+        FC001: {
+            id: "FC001",
+            crop: "Wheat",
+            quantity: 500,
+            farmer: "Rajesh Kumar",
+            farmLocation: "Pune, Maharashtra",
+            harvestDate: "2025-07-15",
+            quality: "Organic Certified",
+            currentLocation: "Distributor Warehouse",
+            price: "₹25/kg"
+        }
+    };
+
+    return {
+        get: (id) => products[id],
+        add: (product) => products[product.id] = product,
+        exists: (id) => !!products[id]
+    };
+})();
+
+// ===================== UTILITIES =====================
+const Utils = {
+    getEl: (id) => document.getElementById(id),
+
+    showMessage: (id, content) => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = content;
     },
-    FC002: {
-        id: "FC002",
-        crop: "Rice",
-        quantity: 300,
-        farmer: "Priya Sharma",
-        farmLocation: "Nashik, Maharashtra",
-        harvestDate: "2025-07-20",
-        quality: "Grade A",
-        currentLocation: "Retail Store",
-        price: "₹35/kg"
+
+    validate: (fields) => {
+        for (let [value, message] of fields) {
+            if (!value) {
+                alert(message);
+                return false;
+            }
+        }
+        return true;
+    },
+
+    generateId: () => {
+        return 'FC' + Math.floor(1000 + Math.random() * 9000); // safer
     }
 };
 
-// ===================== UTIL FUNCTIONS =====================
-const getEl = (id) => document.getElementById(id);
+// ===================== UI COMPONENTS =====================
+const UI = {
+    successBox: (title, content) => `
+        <div class="result-box success">
+            <h3>✅ ${title}</h3>
+            ${content}
+        </div>
+    `,
 
-const showMessage = (elementId, content) => {
-    getEl(elementId).innerHTML = content;
-};
-
-const generateProductId = () => {
-    return 'FC' + Date.now().toString().slice(-3);
-};
-
-const validateInput = (value, message) => {
-    if (!value) {
-        alert(message);
-        return false;
-    }
-    return true;
+    errorBox: (msg) => `
+        <div class="result-box error">
+            <h3 style="color:red;">❌ ${msg}</h3>
+        </div>
+    `
 };
 
 // ===================== ROLE HANDLING =====================
 function showRole() {
-    const role = getEl('userRole').value;
+    const role = Utils.getEl('userRole').value;
 
     document.querySelectorAll('.role-content')
         .forEach(el => el.style.display = 'none');
 
-    if (role) getEl(role).style.display = 'block';
+    if (role) Utils.getEl(role).style.display = 'block';
 }
 
 // ===================== FARMER =====================
-document.addEventListener('DOMContentLoaded', () => {
-    const farmerForm = getEl('farmerForm');
-    if (farmerForm) {
-        farmerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            registerProduct();
-        });
-    }
-});
-
 function registerProduct() {
-    const crop = getEl('cropType').value;
-    const quantity = getEl('quantity').value;
-    const harvestDate = getEl('harvestDate').value;
-    const location = getEl('farmLocation').value;
+    const crop = Utils.getEl('cropType').value.trim();
+    const quantity = Utils.getEl('quantity').value.trim();
+    const harvestDate = Utils.getEl('harvestDate').value;
+    const location = Utils.getEl('farmLocation').value.trim();
 
-    if (!validateInput(crop, "Enter crop type") ||
-        !validateInput(quantity, "Enter quantity") ||
-        !validateInput(harvestDate, "Enter harvest date") ||
-        !validateInput(location, "Enter location")) return;
+    if (!Utils.validate([
+        [crop, "Enter crop type"],
+        [quantity, "Enter quantity"],
+        [harvestDate, "Enter harvest date"],
+        [location, "Enter location"]
+    ])) return;
 
-    const productId = generateProductId();
+    const id = Utils.generateId();
 
-    sampleProducts[productId] = {
-        id: productId,
+    ProductDB.add({
+        id,
         crop,
         quantity,
         farmer: "You",
@@ -87,95 +97,90 @@ function registerProduct() {
         quality: "Pending",
         currentLocation: "Farm",
         price: "Not set"
-    };
+    });
 
-    showMessage('farmerResult', `
-        <div class="result-box success">
-            <h3>✅ Product Registered</h3>
-            <p><b>ID:</b> ${productId}</p>
+    Utils.showMessage('farmerResult',
+        UI.successBox("Product Registered", `
+            <p><b>ID:</b> ${id}</p>
             <p><b>Crop:</b> ${crop}</p>
             <p><b>Quantity:</b> ${quantity} kg</p>
-        </div>
-    `);
+        `)
+    );
 
-    getEl('farmerForm').reset();
+    Utils.getEl('farmerForm').reset();
 }
 
 // ===================== DISTRIBUTOR =====================
 function verifyProduct() {
-    const id = getEl('productId').value.trim();
+    const id = Utils.getEl('productId').value.trim();
 
-    if (!validateInput(id, "Enter Product ID")) return;
+    if (!Utils.validate([[id, "Enter Product ID"]])) return;
 
-    const product = sampleProducts[id];
+    const product = ProductDB.get(id);
 
     if (!product) {
-        return showMessage('distributorResult', errorBox("Product Not Found"));
+        return Utils.showMessage('distributorResult', UI.errorBox("Product Not Found"));
     }
 
-    showMessage('distributorResult', `
-        <div class="result-box success">
-            <h3>✅ Verified</h3>
+    Utils.showMessage('distributorResult',
+        UI.successBox("Verified", `
             <p><b>${product.crop}</b> by ${product.farmer}</p>
             <p>Origin: ${product.farmLocation}</p>
             <p>Quality: ${product.quality}</p>
-        </div>
-    `);
+        `)
+    );
 }
 
 function updateLogistics() {
-    showMessage('distributorResult', `
-        <div class="result-box success">
-            <h3>🚚 Logistics Updated</h3>
+    Utils.showMessage('distributorResult',
+        UI.successBox("Logistics Updated", `
             <p>Status: In Transit</p>
             <p>ETA: 2 days</p>
-        </div>
-    `);
+        `)
+    );
 }
 
 // ===================== RETAILER =====================
 function checkAuthenticity() {
-    const id = getEl('retailerProductId').value.trim();
+    const id = Utils.getEl('retailerProductId').value.trim();
 
-    if (!validateInput(id, "Enter Product ID")) return;
+    if (!Utils.validate([[id, "Enter Product ID"]])) return;
 
-    const product = sampleProducts[id];
+    const product = ProductDB.get(id);
 
     if (!product) {
-        return showMessage('retailerResult', errorBox("Authentication Failed"));
+        return Utils.showMessage('retailerResult', UI.errorBox("Authentication Failed"));
     }
 
-    showMessage('retailerResult', `
-        <div class="result-box success">
-            <h3>✅ Authentic</h3>
+    Utils.showMessage('retailerResult',
+        UI.successBox("Authentic", `
             <p>${product.crop} - ${product.quality}</p>
             <p>Price: ${product.price}</p>
-        </div>
-    `);
+        `)
+    );
 }
 
 function updateInventory() {
-    showMessage('retailerResult', `
-        <div class="result-box success">
-            <h3>📦 Inventory Updated</h3>
+    Utils.showMessage('retailerResult',
+        UI.successBox("Inventory Updated", `
             <p>Stock: 150 kg</p>
-        </div>
-    `);
+        `)
+    );
 }
 
 // ===================== CONSUMER =====================
 function scanProduct() {
-    const id = getEl('qrCode').value.trim();
+    const id = Utils.getEl('qrCode').value.trim();
 
-    if (!validateInput(id, "Enter QR/Product ID")) return;
+    if (!Utils.validate([[id, "Enter QR/Product ID"]])) return;
 
-    const product = sampleProducts[id];
+    const product = ProductDB.get(id);
 
     if (!product) {
-        return showMessage('consumerResult', errorBox("Invalid QR Code"));
+        return Utils.showMessage('consumerResult', UI.errorBox("Invalid QR Code"));
     }
 
-    showMessage('consumerResult', `
+    Utils.showMessage('consumerResult', `
         <div class="product-info">
             <h3>📦 Product Details</h3>
             <p><b>${product.crop}</b> (${product.quantity} kg)</p>
@@ -186,9 +191,13 @@ function scanProduct() {
     `);
 }
 
-// ===================== COMMON UI =====================
-const errorBox = (msg) => `
-    <div class="result-box error">
-        <h3 style="color:red;">❌ ${msg}</h3>
-    </div>
-`;
+// ===================== INIT =====================
+document.addEventListener('DOMContentLoaded', () => {
+    const form = Utils.getEl('farmerForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            registerProduct();
+        });
+    }
+});
