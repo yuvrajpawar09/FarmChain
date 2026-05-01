@@ -1,70 +1,50 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+const roleSelector = document.getElementById("userRole");
+const sections = document.querySelectorAll(".role-content");
 
-body {
-    background: #f4f6f8;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
+roleSelector.addEventListener("change", () => {
+    sections.forEach(sec => sec.classList.add("hidden"));
 
-.container {
-    width: 100%;
-    max-width: 600px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    const selected = roleSelector.value;
+    if (selected) {
+        document.getElementById(selected).classList.remove("hidden");
+    }
+});
 
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
+// Farmer Form
+document.getElementById("farmerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
 
-h1 {
-    color: #2e7d32;
-}
+    const crop = document.getElementById("cropType").value;
+    const qty = document.getElementById("quantity").value;
 
-.role-selector {
-    margin-bottom: 20px;
-}
+    document.getElementById("farmerResult").innerHTML =
+        `✅ Product Registered: ${crop} (${qty} kg)`;
+});
 
-select, input, button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+// Distributor
+document.getElementById("verifyBtn").onclick = () => {
+    document.getElementById("distributorResult").innerText =
+        "✔ Product Verified on Blockchain";
+};
 
-button {
-    background: #2e7d32;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+document.getElementById("logisticsBtn").onclick = () => {
+    document.getElementById("distributorResult").innerText =
+        "🚚 Logistics Updated";
+};
 
-button:hover {
-    background: #1b5e20;
-}
+// Retailer
+document.getElementById("authBtn").onclick = () => {
+    document.getElementById("retailerResult").innerText =
+        "🔒 Product is Authentic";
+};
 
-.btn-group {
-    display: flex;
-    gap: 10px;
-}
+document.getElementById("inventoryBtn").onclick = () => {
+    document.getElementById("retailerResult").innerText =
+        "📦 Inventory Updated";
+};
 
-.hidden {
-    display: none;
-}
-
-.result {
-    margin-top: 15px;
-    padding: 10px;
-    background: #e8f5e9;
-    border-radius: 5px;
-}
+// Consumer
+document.getElementById("scanBtn").onclick = () => {
+    document.getElementById("consumerResult").innerText =
+        "📄 Product details fetched successfully";
+};
